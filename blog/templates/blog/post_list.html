@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Blog Posts{% endblock %}
+{% block content %}
+<h1 class="mb-4 text-center">Blog Posts</h1>
+<ul class="list-group">
+    {% for post in posts %}
+        <li class="list-group-item">
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.body|truncatewords:30 }}</p>
+            <small>By {{ post.author.username }} on {{ post.created_at|date:"F d, Y" }}</small>
+        </li>
+    {% empty %}
+        <li class="list-group-item">No posts yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
