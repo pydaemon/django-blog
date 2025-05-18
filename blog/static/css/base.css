@@ -9,3 +9,9 @@ body {
 li.list-group-item:hover {
     background-color: #f1f1f1;
 }
+.card {
+    border-radius: 0.5rem;
+}
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
