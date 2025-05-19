@@ -15,3 +15,10 @@ li.list-group-item:hover {
 .navbar {
     box-shadow: 0 2px 4px rgba(0,0,0,0.08);
 }
+.card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s;
+}
+.card-body {
+    padding: 2rem;
+}
