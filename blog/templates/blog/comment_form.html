@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Add Comment{% endblock %}
+{% block content %}
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <h2>Add a Comment</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="{% url 'post_detail' post.slug %}" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

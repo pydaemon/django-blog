@@ -6,9 +6,6 @@ body {
     margin-bottom: 10px;
     word-break: break-word;
 }
-li.list-group-item:hover {
-    background-color: #f1f1f1;
-}
 .card {
     border-radius: 0.5rem;
 }
@@ -21,4 +18,10 @@ li.list-group-item:hover {
 }
 .card-body {
     padding: 2rem;
+}
+.list-group-item:hover {
+    background-color: #f8f9fa;
+}
+.category-filter .btn {
+    margin-right: 5px;
 }
