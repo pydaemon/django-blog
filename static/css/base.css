@@ -10796,3 +10796,7 @@ header.masthead .post-heading .meta a {
     font-size: 2.25rem;
   }
 }
+
+html {
+    overflow-y: scroll;
+}

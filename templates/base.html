@@ -29,10 +29,38 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'home' %}">+ New Post</a></li>
+                        {% endif %}
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'home' %}">Home</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about.html">About</a></li>
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="post.html">Sample Post</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact.html">Contact</a></li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                                  <a class="nav-link dropdown-toggle px-lg-3 py-3 py-lg-4" href="#" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    {{ user.username }}
+                                  </a>
+                                  <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="{% url 'password_change' %}">
+                                      Change password</a></li>
+                                    <li>
+                                      <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                      <form method="post" action="{% url 'logout' %}"
+                                        style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item"
+                                          style="display:inline; cursor:pointer;">Logout</button>
+                                      </form>
+                                    </li>
+                                  </ul>
+                                </li>
+                        {% else %}
+                            <li class="nav-item"><a href="{% url 'login' %}" class="nav-link px-lg-3 py-3 py-lg-4" >Log in</a></li>
+                            <li class="nav-item"><a href="{% url 'signup' %}" class="nav-link px-lg-3 py-3 py-lg-4">Sign up</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -46,24 +74,13 @@
                         <div class="site-heading">
                             <h1>Django Blog</h1>
                             <span class="subheading">A Simple Blog Built with Django</span>
-                            {% if user.is_authenticated %}
-                                <p>Hi {{ user.username }}! You are {{ user.age }} years old.</p>
-                            <form action="{% url 'logout' %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit">Log Out</button>
-                            </form>
-                            {% else %}
-                            <p>You are not logged in</p>
-                            <a href="{% url 'login' %}">Log In</a> |
-                            <a href="{% url 'signup' %}">Sign Up</a>
-                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
         </header>
         {% endblock page_header %}
-        <div>
+        <div class="container">
             {% block content %}
             {% endblock content %}
         </div>
