@@ -15,11 +15,13 @@
                 <p class="post-meta">
                     Posted by
                     <a href="#!">{{ post.author }}</a>
-                    on September 24, 2023
+                    on {{ post.date }}
                 </p>
                 <p class="post-meta">
                     Category: <a href="#!">{{ post.category }}</a>
                 </p>
+                <a href="{% url 'post_edit' post.pk %}">Edit</a>
+                <a href="{% url 'post_delete' post.pk %}">Delete</a>
             </div>
             <!-- Divider-->
             <hr class="my-4" />

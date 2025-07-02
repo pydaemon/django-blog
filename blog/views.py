@@ -1,8 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.views.generic import ListView, DetailView, FormView
+from django.views.generic.edit import UpdateView, DeleteView, CreateView
 from django.views.generic.detail import SingleObjectMixin
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from .models import Post
 from .forms import CommentForm
 
@@ -52,3 +53,21 @@ class BlogDetailView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         view = CommentPost.as_view()
         return view(request, *args, **kwargs)
+
+
+class BlogUpdateView(UpdateView):
+    model = Post
+    fields = ("title", "body", "category")
+    template_name = "post_edit.html"
+
+
+class BlogDeleteView(DeleteView):
+    model = Post
+    template_name = "post_delete.html"
+    success_url = reverse_lazy("home")
+
+
+class BlogCreateView(CreateView):
+    model = Post
+    template_name = "post_new.html"
+    fields = ("title", "body", "author", "category")

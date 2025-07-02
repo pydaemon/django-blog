@@ -16,7 +16,7 @@
                     <span class="meta">
                         Posted by
                         <a href="#!">{{ post.author }}</a>
-                        on August 24, 2023
+                        on {{ post.date }}
                     </span>
                 </div>
             </div>
@@ -28,28 +28,27 @@
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
-                {{ post.body }}
-                <br>
-                <br>
+                <p>{{ post.body }}</p>
                 <span style="font-style: italic;">
                 Category: <a href="#!">{{ post.category }}</a>
                 </span>
+                <p><a href="{% url 'post_edit' post.pk %}">Edit</a>
+                <a href="{% url 'post_delete' post.pk %}">Delete</a>
+                </p>
                 <hr>
                 <h4>Comments</h4>
                 {% for comment in post.comment_set.all %}
                 <p>{{ comment.author }} &middot; {{ comment }}</p>
                 {% empty %}
-                    <br>
-                    No comments yet.
+                    <p>No comments yet.</p>
                 {% endfor %}
                 <hr>
                 <h4>Add a comment</h4>
-                <br>
-                <form action="" method="post">
+                <p><form action="" method="post">
                     {% csrf_token %}
                     {{ form|crispy }}
                     <button class="btn btn-success btn-sm" type="submit">Save</button>
-                </form>
+                </form></p>
             </div>
         </div>
     </div>
