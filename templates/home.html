@@ -20,8 +20,10 @@
                 <p class="post-meta">
                     Category: <a href="#!">{{ post.category }}</a>
                 </p>
+                {% if post.author.pk == request.user.pk %}
                 <a href="{% url 'post_edit' post.pk %}">Edit</a>
                 <a href="{% url 'post_delete' post.pk %}">Delete</a>
+                {% endif %}
             </div>
             <!-- Divider-->
             <hr class="my-4" />

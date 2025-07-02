@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views import View
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
@@ -55,19 +55,31 @@ class BlogDetailView(LoginRequiredMixin, View):
         return view(request, *args, **kwargs)
 
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     fields = ("title", "body", "category")
     template_name = "post_edit.html"
 
+    def test_func(self):
+        obj = self.get_object()
+        return obj.author == self.request.user
 
-class BlogDeleteView(DeleteView):
+
+class BlogDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = "post_delete.html"
     success_url = reverse_lazy("home")
 
+    def test_func(self):
+        obj = self.get_object()
+        return obj.author == self.request.user
 
-class BlogCreateView(CreateView):
+
+class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = "post_new.html"
-    fields = ("title", "body", "author", "category")
+    fields = ("title", "body", "category")
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
