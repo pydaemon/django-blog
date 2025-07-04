@@ -22,6 +22,9 @@ class Post(models.Model):
     body = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-date']
+
     def __str__(self):
         return self.title
 
