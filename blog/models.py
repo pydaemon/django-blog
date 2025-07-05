@@ -14,16 +14,17 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    category = models.ForeignKey(
-        Category, related_name="posts", on_delete=models.SET_NULL, null=True, blank=True
-    )
     title = models.CharField(max_length=200)
+    subtitle = models.CharField(max_length=200)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     body = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
+    category = models.ForeignKey(
+        Category, related_name="posts", on_delete=models.SET_NULL, null=True, blank=True
+    )
 
     class Meta:
-        ordering = ['-date']
+        ordering = ["-date"]
 
     def __str__(self):
         return self.title

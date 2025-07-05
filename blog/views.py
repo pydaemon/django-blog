@@ -57,7 +57,7 @@ class BlogDetailView(LoginRequiredMixin, View):
 
 class BlogUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ("title", "body", "category")
+    fields = ("title", "subtitle", "body", "category")
     template_name = "post_edit.html"
 
     def test_func(self):
@@ -78,7 +78,7 @@ class BlogDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = "post_new.html"
-    fields = ("title", "body", "category")
+    fields = ("title", "subtitle", "body", "category")
 
     def form_valid(self, form):
         form.instance.author = self.request.user
