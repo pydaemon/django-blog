@@ -30,6 +30,7 @@ class PostTests(TestCase):
         self.assertEqual(self.post.subtitle, "Test Subtitle")
         self.assertEqual(self.post.author.username, "testuser")
         self.assertEqual(self.post.body, "This is a test post")
+        self.assertEqual(str(self.post), "Test Post")
 
     def test_post_listview(self):
         response = self.client.get(reverse("home"))

@@ -1,12 +1,26 @@
 from rest_framework import serializers
 
-from blog.models import Post
+from blog.models import Post, Category
 
 
 class PostSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(read_only=True, slug_field="username")
-    category = serializers.SlugRelatedField(read_only=True, slug_field="name")
+    category = serializers.SlugRelatedField(
+        queryset=Category.objects.all(),
+        required=False,
+        allow_null=True,
+        slug_field="name",
+    )
 
     class Meta:
         model = Post
-        fields = ("id", "title", "subtitle", "author", "body", "date", "category")
+        fields = (
+            "id",
+            "title",
+            "subtitle",
+            "author",
+            "body",
+            "created_at",
+            "updated_at",
+            "category",
+        )

@@ -18,13 +18,14 @@ class Post(models.Model):
     subtitle = models.CharField(max_length=200)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     body = models.TextField()
-    date = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(
         Category, related_name="posts", on_delete=models.SET_NULL, null=True, blank=True
     )
 
     class Meta:
-        ordering = ["-date"]
+        ordering = ["-created_at"]
 
     def __str__(self):
         return self.title

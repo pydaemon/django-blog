@@ -17,6 +17,8 @@ class PostAdmin(admin.ModelAdmin):
         "author",
         body,
         "category",
+        "created_at",
+        "updated_at",
     ]
 
 
