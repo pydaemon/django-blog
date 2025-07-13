@@ -105,7 +105,7 @@ The project includes user authentication, CRUD operations, permissions, API docu
 | `/api/v1/dj-rest-auth/login/` | POST | Login and get token |
 | `/api/v1/dj-rest-auth/logout/` | POST | Logout and invalidate token |
 
-> Authorization required for POST, PUT, PATCH, DELETE methods
+> Authorization required for GET, POST, PUT, PATCH, DELETE methods
 
 ---
 
@@ -171,7 +171,7 @@ For more info, see [Django deployment docs](https://docs.djangoproject.com/en/5.
 
 ## 📸 Screenshots (Coming soon)
 
-*Add screenshots of your app here if desired.*
+
 
 ---
 

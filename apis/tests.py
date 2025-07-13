@@ -26,14 +26,16 @@ class APITests(APITestCase):
         )
 
     def test_api_listview(self):
-        response = self.client.get(reverse("post_list_api"))
+        self.client.force_login(self.user)
+        response = self.client.get(reverse("posts-list"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Post.objects.count(), 1)
         self.assertContains(response, self.post)
 
     def test_api_detailview(self):
+        self.client.force_login(self.user)
         response = self.client.get(
-            reverse("post_detail_api", kwargs={"pk": self.post.id}), format="json"
+            reverse("posts-detail", kwargs={"pk": self.post.id}), format="json"
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Post.objects.count(), 1)
