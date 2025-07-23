@@ -9,7 +9,7 @@ from .serializers import PostSerializer, UserSerializer
 
 class PostViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthorOrReadOnly,)
-    queryset = Post.objects.all()
+    queryset = Post.published.all()
     serializer_class = PostSerializer
 
     def perform_create(self, serializer):

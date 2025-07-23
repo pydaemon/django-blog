@@ -7,21 +7,25 @@ class CommentInline(admin.TabularInline):
     extra = 0
 
 
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    def body(obj):
-        return obj.body[:50] + "..."
-
     inlines = [CommentInline]
     list_display = [
         "title",
+        "slug",
         "author",
-        body,
+        "publish",
+        "status",
         "category",
-        "created_at",
-        "updated_at",
     ]
+    list_filter = ["status", "created_at", "publish", "author", "category"]
+    search_fields = ["title", "body"]
+    prepopulated_fields = {"slug": ("title",)}
+    raw_id_fields = ["author"]
+    date_hierarchy = "publish"
+    ordering = ["status", "publish"]
+    show_facets = admin.ShowFacets.ALWAYS
 
 
 admin.site.register(Category)
-admin.site.register(Post, PostAdmin)
 admin.site.register(Comment)

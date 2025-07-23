@@ -10,12 +10,14 @@ from .forms import CommentForm
 
 class BlogListView(ListView):
     model = Post
+    queryset = Post.published.all()
     template_name = "home.html"
     paginate_by = 5
 
 
 class CommentGet(DetailView):
     model = Post
+    queryset = Post.published.all()
     template_name = "post_detail.html"
 
     def get_context_data(self, **kwargs):
@@ -57,6 +59,7 @@ class BlogDetailView(LoginRequiredMixin, View):
 
 class BlogUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
+    queryset = Post.published.all()
     fields = ("title", "subtitle", "body", "category")
     template_name = "post_edit.html"
 
@@ -67,6 +70,7 @@ class BlogUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class BlogDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
+    queryset = Post.published.all()
     template_name = "post_delete.html"
     success_url = reverse_lazy("home")
 
