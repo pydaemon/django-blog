@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import get_object_or_404
 from django.views import View
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
@@ -16,9 +17,21 @@ class BlogListView(ListView):
 
 
 class CommentGet(DetailView):
-    model = Post
-    queryset = Post.published.all()
     template_name = "post_detail.html"
+
+    def get_object(self, queryset=None):
+        year = self.kwargs.get("year")
+        month = self.kwargs.get("month")
+        day = self.kwargs.get("day")
+        post = self.kwargs.get("post")
+        return get_object_or_404(
+            Post,
+            status=Post.Status.PUBLISHED,
+            slug=post,
+            publish__year=year,
+            publish__month=month,
+            publish__day=day,
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -27,9 +40,22 @@ class CommentGet(DetailView):
 
 
 class CommentPost(SingleObjectMixin, FormView):
-    model = Post
     form_class = CommentForm
     template_name = "post_detail.html"
+
+    def get_object(self, queryset=None):
+        year = self.kwargs.get("year")
+        month = self.kwargs.get("month")
+        day = self.kwargs.get("day")
+        post = self.kwargs.get("post")
+        return get_object_or_404(
+            Post,
+            status=Post.Status.PUBLISHED,
+            slug=post,
+            publish__year=year,
+            publish__month=month,
+            publish__day=day,
+        )
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -44,7 +70,7 @@ class CommentPost(SingleObjectMixin, FormView):
 
     def get_success_url(self):
         post = self.object
-        return reverse("post_detail", kwargs={"pk": post.pk})
+        return post.get_absolute_url()
 
 
 class BlogDetailView(LoginRequiredMixin, View):

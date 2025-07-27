@@ -131,11 +131,11 @@ You can view and test the API endpoints interactively:
 
 ```
 django-blog/
-├── blog/                  # Post model, CRUD
+├── blog/                  # Blog models, views
 ├── accounts/              # Custom user model and auth
 ├── apis/                  # REST API logic
-├── django_project/        # Core blog functionality
-├── static/                # Static assets (Bootstrap)
+├── django_project/        # Settings, URLs, WSGI
+├── static/                # Static assets (Bootstrap, CSS, JS)
 ├── templates/             # HTML templates
 ├── manage.py
 ├── .gitignore
