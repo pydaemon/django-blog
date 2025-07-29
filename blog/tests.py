@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from django.utils.text import slugify
 
 from .models import Post, Category
 
@@ -22,6 +23,8 @@ class PostTests(TestCase):
             subtitle="Test Subtitle",
             author=cls.user,
             body="This is a test post",
+            slug=slugify("Test Post"),
+            status=Post.Status.PUBLISHED,
         )
 
     def test_post_content(self):

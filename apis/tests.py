@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.utils.text import slugify
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -23,6 +24,8 @@ class APITests(APITestCase):
             body="This is a test post",
             author=cls.user,
             category=cls.category,
+            slug=slugify("Test Post"),
+            status=Post.Status.PUBLISHED,
         )
 
     def test_api_listview(self):

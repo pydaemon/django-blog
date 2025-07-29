@@ -1,16 +1,16 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import get_object_or_404
+from django.core.mail import send_mail
+from django.shortcuts import get_object_or_404, render
 from django.views import View
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
 from django.views.generic.detail import SingleObjectMixin
 from django.urls import reverse, reverse_lazy
 from .models import Post
-from .forms import CommentForm
+from .forms import CommentForm, EmailPostForm
 
 
 class BlogListView(ListView):
-    model = Post
     queryset = Post.published.all()
     template_name = "home.html"
     paginate_by = 5
@@ -84,7 +84,6 @@ class BlogDetailView(LoginRequiredMixin, View):
 
 
 class BlogUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Post
     queryset = Post.published.all()
     fields = ("title", "subtitle", "body", "category")
     template_name = "post_edit.html"
@@ -95,7 +94,6 @@ class BlogUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 
 class BlogDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Post
     queryset = Post.published.all()
     template_name = "post_delete.html"
     success_url = reverse_lazy("home")
@@ -108,8 +106,37 @@ class BlogDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = "post_new.html"
-    fields = ("title", "subtitle", "body", "category")
+    fields = ("title", "subtitle", "body", "category", "status")
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+    def get_success_url(self):
+        post = self.object
+        if post.status == Post.Status.PUBLISHED:
+            return post.get_absolute_url()
+        return reverse("home")
+
+
+def post_share(request, post_id):
+    post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
+    sent = False
+
+    if request.method == "POST":
+        form = EmailPostForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            post_url = request.build_absolute_uri(post.get_absolute_url())
+            subject = f"{cd['name']} ({cd['email']}) recommends you read {post.title}"
+            message = f"Read {post.title} at {post_url}\n\n{cd['name']}'s comments: {cd['comments']}"
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email=cd["email"],
+                recipient_list=[cd["to"]],
+            )
+            sent = True
+    else:
+        form = EmailPostForm()
+    return render(request, "share.html", {"post": post, "form": form, "sent": sent})

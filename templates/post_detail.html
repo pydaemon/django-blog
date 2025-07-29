@@ -33,10 +33,12 @@
                 <span style="font-style: italic;">
                 Category: <a href="#!">{{ post.category }}</a>
                 </span>
+                <p>
                 {% if post.author.pk == request.user.pk %}
-                <p><a href="{% url 'post_edit' post.pk %}">Edit</a>
+                <a href="{% url 'post_edit' post.pk %}">Edit</a>
                 <a href="{% url 'post_delete' post.pk %}">Delete</a>
                 {% endif %}
+                <a href="{% url "post_share" post.id %}">Share this post</a>
                 </p>
                 <hr>
                 <h4>Comments</h4>
